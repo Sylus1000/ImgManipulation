@@ -24,18 +24,17 @@
         });
       }
 
-      function getImgData(img) {
-        canvas = document.createElement("canvas");
+      function getRGBA(img) {
+        let canvas = document.createElement("canvas");
         canvas.width = img.width;
         canvas.height = img.height;
-        ctx = canvas.getContext("2d");
+        let ctx = canvas.getContext("2d");
         ctx.drawImage(img, 0, 0, img.width, img.height);
-        let data = ctx.getImageData(0, 0, img.width, img.height);
-        return data;
+        return ctx.getImageData(0, 0, img.width, img.height).data;
       }
 
       function simpleAutoContrast(img) {
-        let data = getImgData(img);
+        let data = getRGBA(img);
         console.log(data);
       }
 
