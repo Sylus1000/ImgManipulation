@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>More Contrast</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      document.body.onload = main;
+
+      async function loadImage(src) {
+        return new Promise((resolve, reject) => {
+          let img = new Image();
+          img.onload = () => {
+            resolve(img);
+          };
+          img.onerror = (err) => {
+            reject(err);
+          };
+          img.src = src;
+        });
+      }
+
+      function getImgData(img) {
+        canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, img.width, img.height);
+        let data = ctx.getImageData(0, 0, img.width, img.height);
+        return data;
+      }
+
+      function simpleAutoContrast(img) {
+        let data = getImgData(img);
+        console.log(data);
+      }
+
+      async function main() {
+        var img = await loadImage("./images/1.png");
+        simpleAutoContrast(img);
+      }
+    </script>
+  </body>
+</html>
