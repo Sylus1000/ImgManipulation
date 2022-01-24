@@ -10,6 +10,7 @@
     <div id="root"></div>
     <script>
       document.body.onload = main;
+      const root = document.getElementById("root");
 
       async function loadImage(src) {
         return new Promise((resolve, reject) => {
@@ -30,7 +31,7 @@
         canvas.height = img.height;
         let ctx = canvas.getContext("2d");
         ctx.drawImage(img, 0, 0, img.width, img.height);
-        return ctx.getImageData(0, 0, img.width, img.height).data;
+        return ctx.getImageData(0, 0, img.width, img.height);
       }
 
       function simpleAutoContrast(img) {
@@ -38,9 +39,56 @@
         console.log(data);
       }
 
+      //http://support.ptc.com/help/mathcad/en/index.html#page/PTC_Mathcad_Help/example_grayscale_and_color_in_images.html
+      function rgb2gray(img) {
+        let data = getRGBA(img).data;
+        let temp = [];
+        for (let i = 0; i < data.length; i += 4) {
+          let r = data[i] * 0.299;
+          let g = data[i + 1] * 0.587;
+          let b = data[i + 2] * 0.114;
+          let grayscale = Math.floor(r + g + b);
+          temp.push(grayscale);
+          temp.push(grayscale);
+          temp.push(grayscale);
+          temp.push(data[i + 3]);
+        }
+        return new ImageData(
+          Uint8ClampedArray.from(temp),
+          img.width,
+          img.height
+        );
+      }
+
+      function drawImageData(root_element, img_data) {
+        let img_width = img_data.width;
+        let img_height = img_data.height;
+        let canvas = document.createElement("canvas");
+        canvas.width = img_width;
+        canvas.height = img_height;
+        ctx = canvas.getContext("2d");
+        ctx.putImageData(img_data, 0, 0);
+        root_element.appendChild(canvas);
+      }
+
+      function drawImage(root_element, img) {
+        let img_data = getRGBA(img);
+        let img_width = img.width;
+        let img_height = img.height;
+        let canvas = document.createElement("canvas");
+        canvas.width = img_width;
+        canvas.height = img_height;
+        ctx = canvas.getContext("2d");
+        ctx.putImageData(img_data, 0, 0);
+        root_element.appendChild(canvas);
+      }
+
       async function main() {
-        var img = await loadImage("./images/1.png");
-        simpleAutoContrast(img);
+        var img = await loadImage("./images/2.png");
+        var img2 = await loadImage("./images/3.png");
+        drawImageData(root, rgb2gray(img));
+        drawImage(root, img2);
+        drawImageData(root, rgb2gray(img2));
       }
     </script>
   </body>
