@@ -172,16 +172,11 @@
       }
 
       async function main() {
-        var img = await loadImage("./images/2.png");
-        var img2 = await loadImage("./images/3.png");
-        let before1 = rgb2gray(img2);
-        let after1 = autoContrast(before1, 127, 255);
-        let before2 = getRGBA(img2);
-        let after2 = autoContrast(before2, 63, 127);
+        var img = await loadImage("./images/4.png");
+        let before1 = rgb2gray(img);
+        let after1 = autoContrast(before1, 0, 255);
         drawImageData(root, before1);
         drawImageData(root, after1);
-        drawImageData(root, before2);
-        drawImageData(root, after2);
       }
     </script>
   </body>
