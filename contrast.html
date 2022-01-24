@@ -175,8 +175,10 @@
         var img = await loadImage("./images/4.png");
         let before1 = rgb2gray(img);
         let after1 = autoContrast(before1, 0, 255);
+        let negative = autoContrast(after1, 255, 0);
         drawImageData(root, before1);
         drawImageData(root, after1);
+        drawImageData(root, negative);
       }
     </script>
   </body>
